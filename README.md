@@ -116,6 +116,13 @@ Build the server
   	
 You will be able to see the completed project at localhost:PORT.
 
+## Docker
+
+Build the image and run the container
+
+    docker build . -t lolchest
+    docker run -p 8080:8080 --name lolchest lolchest
+
 # Challenges
 It was difficult for us to layout and display all the information in a user intuitive way using CSS. We were able to layout everything accordingly. The end result is a polished product that we are extremely proud of.
 
