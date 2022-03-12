@@ -3,17 +3,17 @@ const DEBUG = false;
 // Load environment variables
 require('dotenv').config({silent: !DEBUG});
 
-const port    = process.env.PORT;
+const port = process.env.PORT;
 
-const express             = require('express');
-const app                 = express();
-const path                = require('path');
-const request             = require('./helpers/request');
-const cache               = require('./helpers/cache');
+const express = require('express');
+const app = express();
+const path = require('path');
+const request = require('./helpers/request');
+const cache = require('./helpers/cache');
 
 
 // Defined values
-const rank    = ['S+', 'S', 'S-', 'A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'No Rank'];
+const rank = ['S+', 'S', 'S-', 'A+', 'A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'C-', 'D+', 'D', 'D-', 'No Rank'];
 const CHAMPION_ROLES = require('./champion_roles.json');
 const REGIONS = require('./regions.json');
 
@@ -23,7 +23,7 @@ const NUMBER_CHAMPS_TO_RECOMMEND = 6;
 // Main page
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname+ '/public/index.html'));
+    res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
 // API queries
@@ -54,7 +54,7 @@ app.listen(port, function () {
 const getSummonerId = (params) => {
     const summoner_name = params.username;
     const region = params.region;
-    const url = `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner_name}`;
+    const url = `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/` + encodeURIComponent(summoner_name);
 
     return request(url).then(({id, name}) =>
         ({
@@ -106,8 +106,8 @@ const filterChampions = (data) => {
 
 
 /**
-Responds with the assembled information
-**/
+ Responds with the assembled information
+ **/
 function displayData({
     summoner_name,
     summoner_id,
@@ -128,7 +128,7 @@ function displayData({
 /****** Helper Functions ******/
 
 function combineChampionInfo({name, title, key, image, id}, championMasteryList) {
-    const championMastery = championMasteryList.find(function(c) {
+    const championMastery = championMasteryList.find(function (c) {
         return c.championId == key; // eslint-disable-line eqeqeq
     });
 
@@ -136,21 +136,21 @@ function combineChampionInfo({name, title, key, image, id}, championMasteryList)
         name,
         title,
         key,
-        'champion_points'   : 0,
+        'champion_points': 0,
         image,
-        'has_chest'         : false,
+        'has_chest': false,
         id,
     };
 
     if (championMastery !== undefined) {
         if (championMastery.highestGrade !== undefined) {
-            result.highest_grade      = championMastery.highestGrade;
+            result.highest_grade = championMastery.highestGrade;
         }
         if (championMastery.championPoints !== undefined) {
-            result.champion_points    = championMastery.championPoints;
+            result.champion_points = championMastery.championPoints;
         }
         if (championMastery.chestGranted !== undefined) {
-            result.has_chest          = championMastery.chestGranted;
+            result.has_chest = championMastery.chestGranted;
         }
     }
     return result;
@@ -159,9 +159,11 @@ function combineChampionInfo({name, title, key, image, id}, championMasteryList)
 function championHasChest(championMastery) {
     return championMastery.has_chest;
 }
+
 function championHasNoChest(championMastery) {
     return !championHasChest(championMastery);
 }
+
 function championRoleMatches(champion, role) {
     return role === 'all' || (role in CHAMPION_ROLES && CHAMPION_ROLES[role].indexOf(champion.key) !== -1);
 }
