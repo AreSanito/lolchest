@@ -19,7 +19,7 @@ function loadPlayer() {
         },
         success: function (data) {
             // querying = false;
-            if (data.error != undefined) {
+            if (data.error !== undefined) {
                 const error = data.error.status;
                 showError(clarifyError(error.status_code, error.message));
                 return;
@@ -36,7 +36,7 @@ function loadPlayer() {
                 $('#recChamps').removeClass('hidden');
             }
             if (showOwned) {
-                $('#ownedChampsContainer').html(displayChamps(data.has_chest, false, data.version));
+                $('#ownedChampsContainer').html(displayChamps(data.has_chest, true, data.version));
                 $('#ownedChamps').fadeIn(800);
                 $('#ownedChamps').removeClass('hidden');
             }
