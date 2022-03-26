@@ -26,6 +26,10 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
+app.get('/riot.txt', function (req, res) {
+    res.sendFile(path.join(__dirname + '/riot.txt'));
+});
+
 // API queries
 app.get('/info/:region/:username/:role*?', function (req, res) {
     if (req.params.role === undefined) {

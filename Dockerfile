@@ -5,6 +5,4 @@ COPY ./ /opt/app
 
 RUN npm install
 
-COPY . .
-
 CMD [ "node", "app.js" ]
