@@ -46,7 +46,7 @@ app.get('/info/:region/:username/:role*?', function (req, res) {
         .then(data => res.json(data))
         .catch(err => {
             console.log('Error:', err); // eslint-disable-line no-console
-            res.json(err);
+            res.json('Internal error');
         });
 });
 
